@@ -1,3 +1,4 @@
+results/11_C1vsC3_pathways.csv
 "pathway","median_C1","median_C3","p","dir","label"
 "Kynurenine",1.07050716753358,-0.57743203465777,7.66501005960928e-16,"C1-high","Kynurenine
 p=p = 7.67e-16"
