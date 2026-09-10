@@ -1,4 +1,4 @@
-# 08_fig9.R — Figure 9: REAL TIDEpy output (auto-detect columns)
+# 08_fig9.R — Figure 9: TIDE (4 panels, A-D merged)
 source("R/00_config.R")
 suppressPackageStartupMessages({ library(tidyverse); library(patchwork) })
 coh     <- readRDS(file.path(dirs$results, "01_cohort.rds"))
@@ -15,15 +15,7 @@ rdf <- read.csv(path.expand(paths$response), check.names = FALSE)
 cn <- colnames(rdf)
 id_c   <- grep("patient|sample|^ID$", cn, ignore.case = TRUE, value = TRUE)[1]
 tide_c <- grep("TIDE", cn, ignore.case = TRUE, value = TRUE)[1]
-resp_c <- grep("responder|response|benefit", cn, ignore.case = TRUE, value = TRUE)[1]
-exc_c  <- grep("exclusion", cn, ignore.case = TRUE, value = TRUE)[1]
-message("TIDE 列识别: id=", id_c, " | TIDE=", tide_c, " | Responder=", resp_c,
-        " | Exclusion=", ifelse(is.na(exc_c), "-", exc_c))
-if (is.na(id_c) || is.na(tide_c)) {
-  message("实际列名: ", paste(cn, collapse = ", "))
-  stop("id/TIDE 列识别失败, 把实际列名发我")
-}
-
+resp_c <- intersect("Responder", cn)[1]
 rdf$patient <- patient_id(as.character(rdf[[id_c]]))
 rdf$TIDE <- suppressWarnings(as.numeric(rdf[[tide_c]]))
 if (!is.na(resp_c)) {
@@ -31,9 +23,7 @@ if (!is.na(resp_c)) {
   rdf$Responder <- ifelse(grepl("true|responder|benefit|yes", rv, ignore.case = TRUE),
                           "Responder", "Non-responder")
 } else {
-  rdf$Responder <- ifelse(rdf$TIDE < median(rdf$TIDE, na.rm = TRUE),
-                          "Responder", "Non-responder")
-  message("无 Responder 列, 用 TIDE<中位数 二分")
+  rdf$Responder <- ifelse(rdf$TIDE < median(rdf$TIDE, na.rm = TRUE), "Responder", "Non-responder")
 }
 rdf$Responder <- factor(rdf$Responder, levels = c("Non-responder", "Responder"))
 
@@ -42,10 +32,8 @@ f9 <- rdf %>% filter(patient %in% coh$patients, !is.na(TIDE)) %>%
   filter(!is.na(cluster)) %>%
   left_join(scores %>% select(patient, Kynurenine), by = "patient")
 tab <- table(f9$cluster, f9$Responder)
-message("Fig9 应答表 (真实TIDE, 管线亚型):"); print(tab)
+message("Fig9 应答表:"); print(tab)
 message("Fisher: ", fmt_p(fisher.test(tab)$p.value))
-write.csv(as.data.frame(tab), file.path(dirs$results, "08_response_table.csv"),
-          row.names = FALSE)
 
 prop_df <- f9 %>% group_by(cluster, Responder) %>% summarise(n = n(), .groups = "drop") %>%
   group_by(cluster) %>% mutate(total = sum(n), rate = n / total,
@@ -59,25 +47,38 @@ pA <- ggplot(prop_df, aes(cluster, rate, fill = cluster)) +
             vjust = -0.3, size = 3.2) +
   scale_fill_manual(values = sub_cols) + theme_paper() + theme(legend.position = "none") +
   ylim(0, 1.2) +
-  labs(title = "TIDE-predicted response rate by subtype",
+  labs(title = "TIDE-predicted response rate",
        subtitle = paste0("Fisher exact, ", fmt_p(fisher.test(tab)$p.value)),
        x = NULL, y = "Responder proportion")
 pB <- ggplot(f9, aes(cluster, TIDE, fill = cluster)) +
   geom_boxplot(alpha = .8, outlier.shape = NA) +
   geom_jitter(width = .15, alpha = .5, size = 1.5) +
   scale_fill_manual(values = sub_cols) + theme_paper() + theme(legend.position = "none") +
-  labs(title = "TIDE score (higher = more resistant)",
-       x = NULL, y = "TIDE", caption = fmt_p(kw_p(TIDE ~ cluster, f9)))
+  labs(title = "TIDE score", x = NULL, y = "TIDE",
+       caption = fmt_p(kw_p(TIDE ~ cluster, f9)))
 pC <- ggplot(f9, aes(Kynurenine, TIDE, color = cluster)) +
   geom_point(size = 2.5, alpha = .8) +
   geom_smooth(method = "lm", se = TRUE, color = "black") +
   scale_color_manual(values = sub_cols) + theme_paper() +
-  labs(title = "Kynurenine vs TIDE resistance score",
-       x = "Kynurenine score", y = "TIDE score", color = "Subtype",
-       caption = cor_lab(f9$Kynurenine, f9$TIDE))
-fig9 <- (pA | pB | pC) + plot_annotation(tag_levels = "A") &
+  labs(title = "Kynurenine vs TIDE", x = "Kynurenine score", y = "TIDE score",
+       color = "Subtype", caption = cor_lab(f9$Kynurenine, f9$TIDE))
+
+# ---- Panel D: TIDE components (merged from former Fig S1) ----
+comp <- read.csv(file.path(dirs$results, "10_tide_components.csv"))
+comp$dir <- comp$rho > 0
+pD <- ggplot(comp, aes(reorder(component, rho), rho, fill = dir)) +
+  geom_col(width = .7, color = "black", linewidth = .3) +
+  geom_text(aes(label = sprintf("rho=%.2f
+%s", rho, fmt_p(p))),
+            size = 2.8, hjust = ifelse(comp$rho > 0, -0.05, 1.08)) +
+  scale_fill_manual(values = c("TRUE" = "#E64B35", "FALSE" = "#4DBBD5")) +
+  coord_flip() + theme_paper() + theme(legend.position = "none") +
+  ylim(-0.6, 0.78) +
+  labs(title = "TIDE components", x = NULL, y = "Spearman rho")
+
+fig9 <- (pA | pB | pC | pD) + plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 14, face = "bold"))
-ggsave(file.path(dirs$figures, "Figure9_TIDE.pdf"), fig9, width = 14, height = 5)
+ggsave(file.path(dirs$figures, "Figure9_TIDE.pdf"), fig9, width = 17, height = 5)
 write.csv(f9 %>% select(patient, cluster, TIDE, Responder, Kynurenine),
           file.path(dirs$results, "08_tide.csv"), row.names = FALSE)
-message("08 done: Figure9 (real TIDE) 已出")
+message("08 done: Figure9_TIDE.pdf 四联图（A-D 合并）已出")
