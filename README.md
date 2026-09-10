@@ -27,7 +27,7 @@ intervention, no hand-edited intermediate tables.
     R/08_fig9.R            Figure 9 (TIDEpy v1.3.9, Other cancer model, default
                            normalization; responder = TIDE < 0)
     R/09_tcga_survival.R   Exploratory TCGA OS (19 events; reported as one sentence)
-    R/10_tide_supp.R       Figure S1: Kynurenine vs TIDE component scores
+    R/10_tide_supp.R       TIDE component scores (data table for Figure 9D)
     R/11_extra_analyses.R  Supplementary: SLC7A5 disconnection (Fig S3) and C1-vs-C3
                            differential program (Fig S2, Table S3)
 
@@ -68,13 +68,8 @@ Exclusion, MDSC, CAF, TAM M2, Responder) is the input at paths$response.
     Table S1    16 pathway gene sets (identical to params$gene_sets in R/00_config.R)
     Table S2    Consensus clustering stability (PAC / silhouette, k = 2-6)
     Table S3    Pathway-level C1 vs C3 differences (11_C1vsC3_pathways.csv)
-    Figure S1   Kynurenine vs TIDE component scores (TAM M2, Exclusion, MDSC, CAF,
-                Dysfunction)
-    Figure S2   C1 vs C3 volcano with kynurenine-pathway genes highlighted (AFMID is
-                the only KP gene up-regulated in C1)
-    Figure S3   SLC7A5 disconnection (no subtype difference; no positive correlation
-                with the Kynurenine score)
-
+    Figure S1   C1 vs C3 volcano with kynurenine-pathway genes highlighted
+    Figure S2   SLC7A5 disconnection
 ## Correspondence with the original report & known deviations
 
 The original analysis session was lost; this pipeline rebuilds it from raw data.
