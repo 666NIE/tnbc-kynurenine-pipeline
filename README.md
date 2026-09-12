@@ -30,6 +30,9 @@ intervention, no hand-edited intermediate tables.
     R/10_tide_supp.R       TIDE component scores (data table for Figure 9D)
     R/11_extra_analyses.R  Supplementary: SLC7A5 disconnection (Fig S3) and C1-vs-C3
                            differential program (Fig S2, Table S3)
+    R/12_k2_gap.R           Stability: k=2 profiles and gap statistic (Table S2)
+    R/13_metabric_cluster.R Independent subtyping in METABRIC (Figure S3)
+    R/14_sensitivity.R      Scoring-system sensitivity analysis (Table S4)
 
 ## Data acquisition (not redistributed; download required)
 
@@ -65,11 +68,11 @@ Exclusion, MDSC, CAF, TAM M2, Responder) is the input at paths$response.
 
 ## Supplementary materials
 
-    Table S1    16 pathway gene sets (identical to params$gene_sets in R/00_config.R)
-    Table S2    Consensus clustering stability (PAC / silhouette, k = 2-6)
-    Table S3    Pathway-level C1 vs C3 differences (11_C1vsC3_pathways.csv)
-    Figure S1   C1 vs C3 volcano with kynurenine-pathway genes highlighted
-    Figure S2   SLC7A5 disconnection
+    Figure S1   C1 vs C3 volcano, kynurenine genes highlighted (AFMID/AADAT/GPT2 up in C1)
+    Figure S2   SLC7A5 disconnection (significant negative correlation)
+    Figure S3   Independent subtyping in METABRIC cohort (M1, n=97; OS p=0.018)
+    Table S2    Stability (PAC / silhouette / gap statistic, k=2-6, plus k=2 profile)
+    Table S4    Sensitivity analysis (absolute-expression scores, partial correlations)
 ## Correspondence with the original report & known deviations
 
 The original analysis session was lost; this pipeline rebuilds it from raw data.
