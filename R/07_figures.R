@@ -37,7 +37,7 @@ p5c <- ggplot(df, aes(cluster, Immunosuppressive, fill = cluster)) +
        caption = fmt_p(kw_p(Immunosuppressive ~ cluster, df)))
 fig5 <- (p5a / (p5b | p5c)) + plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 14, face = "bold"))
-ggsave(file.path(dirs$figures, "Figure5_immunosuppression.pdf"), fig5, width = 11, height = 9)
+ggsave(file.path(dirs$figures, "Figure4_immunosuppression.pdf"), fig5, width = 11, height = 9)
 message("Figure 5 done")
 
 # ============ Figure 7 (metadata 版; A/B/H 面板需计数矩阵, README TODO) ============

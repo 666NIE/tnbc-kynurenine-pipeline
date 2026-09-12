@@ -42,7 +42,7 @@ p3d <- ggplot(df, aes(Kynurenine, T_cell, color = cluster)) +
        caption = cor_lab(df$Kynurenine, df$T_cell))
 fig3 <- (p3a | p3b) / (p3c | p3d) + plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 14, face = "bold"))
-ggsave(file.path(dirs$figures, "Figure3_trap.pdf"), fig3, width = 11, height = 9)
+ggsave(file.path(dirs$figures, "Figure2_trap.pdf"), fig3, width = 11, height = 9)
 
 feats <- setdiff(names(params$gene_sets), "Kynurenine")
 coupling <- bind_rows(lapply(feats, function(f) {
@@ -59,7 +59,7 @@ p6 <- ggplot(coupling, aes(reorder(feature, rho), rho, fill = sig)) +
   coord_flip() + theme_paper() + theme(legend.position = "none") +
   ylim(min(coupling$rho) - .25, max(coupling$rho) + .25) +
   labs(title = "Kynurenine-immune coupling across all samples", x = NULL, y = "Spearman rho")
-ggsave(file.path(dirs$figures, "Figure6_coupling.pdf"), p6, width = 7.5, height = 6)
+ggsave(file.path(dirs$figures, "Figure5_coupling.pdf"), p6, width = 7.5, height = 6)
 write.csv(coupling, file.path(dirs$results, "04_coupling.csv"), row.names = FALSE)
 
 mat <- df %>% select(all_of(names(params$gene_sets)))
@@ -72,6 +72,6 @@ p8 <- ggplot(cor_df, aes(Var1, Var2, fill = Freq)) +
   geom_text(aes(label = sprintf("%.2f", Freq)), size = 2.3) +
   theme_paper() + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(title = "Correlation matrix of metabolic-immune features", x = NULL, y = NULL)
-ggsave(file.path(dirs$figures, "Figure8_corrmatrix.pdf"), p8, width = 9, height = 7.5)
+ggsave(file.path(dirs$figures, "Figure6_corrmatrix.pdf"), p8, width = 9, height = 7.5)
 saveRDS(cor_m, file.path(dirs$results, "04_cormatrix.rds"))
 message("04 done")

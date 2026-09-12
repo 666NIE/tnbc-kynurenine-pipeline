@@ -46,8 +46,8 @@ if ("SLC7A5" %in% colnames(df)) {
          caption = cor_lab(df$Kynurenine, df$SLC7A5))
   figA <- (pA1 | pA2) + plot_annotation(tag_levels = "A") &
     theme(plot.tag = element_text(size = 14, face = "bold"))
-  ggsave(file.path(dirs$figures, "Figure11_SLC7A5.pdf"), figA, width = 11, height = 5)
-  message("Figure11_SLC7A5.pdf saved")
+  ggsave(file.path(dirs$figures, "FigureS2_SLC7A5.pdf"), figA, width = 11, height = 5)
+  message("FigureS2_SLC7A5.pdf saved")
 }
 
 message("=== Part B: C1 vs C3 差异程序 ===")
@@ -101,6 +101,6 @@ pB2 <- ggplot(pw, aes(reorder(pathway, median_C1 - median_C3), median_C1 - media
        x = NULL, y = "C1 minus C3")
 figB <- (pB1 | pB2) + plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 14, face = "bold"))
-ggsave(file.path(dirs$figures, "Figure11_C1vsC3.pdf"), figB, width = 13, height = 6)
-message("Figure11_C1vsC3.pdf saved")
+ggsave(file.path(dirs$figures, "FigureS1_KynGenes_C1vsC3.pdf"), figB, width = 13, height = 6)
+message("FigureS1_KynGenes_C1vsC3.pdf saved")
 message("11 all done")

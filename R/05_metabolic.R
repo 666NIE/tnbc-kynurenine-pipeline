@@ -42,5 +42,5 @@ p4D <- ggplot(df, aes(OXPHOS, Glycolysis, color = cluster)) +
        caption = cor_lab(df$OXPHOS, df$Glycolysis))
 fig4 <- (p4A | p4B) / (p4C | p4D) + plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 14, face = "bold"))
-ggsave(file.path(dirs$figures, "Figure4_PGC1a_OXPHOS.pdf"), fig4, width = 11, height = 9)
+ggsave(file.path(dirs$figures, "Figure3_PGC1a_OXPHOS.pdf"), fig4, width = 11, height = 9)
 message("05 done")

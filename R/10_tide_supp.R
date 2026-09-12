@@ -20,6 +20,5 @@ p <- ggplot(comp, aes(reorder(component, rho), rho, fill = rho > 0)) +
   labs(title = "Kynurenine associates with exclusion and suppressive myeloid infiltration",
        subtitle = "Spearman correlation with TIDE component scores",
        x = NULL, y = "Spearman rho")
-ggsave(file.path(dirs$figures, "FigureS_TIDE_components.pdf"), p, width = 7, height = 4.5)
 write.csv(comp, file.path(dirs$results, "10_tide_components.csv"), row.names = FALSE)
 message("10 done")

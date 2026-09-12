@@ -78,7 +78,7 @@ pD <- ggplot(comp, aes(reorder(component, rho), rho, fill = dir)) +
 
 fig9 <- (pA | pB | pC | pD) + plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 14, face = "bold"))
-ggsave(file.path(dirs$figures, "Figure9_TIDE.pdf"), fig9, width = 17, height = 5)
+ggsave(file.path(dirs$figures, "Figure8_TIDE.pdf"), fig9, width = 17, height = 5)
 write.csv(f9 %>% select(patient, cluster, TIDE, Responder, Kynurenine),
           file.path(dirs$results, "08_tide.csv"), row.names = FALSE)
-message("08 done: Figure9_TIDE.pdf 四联图（A-D 合并）已出")
+message("08 done: Figure8_TIDE.pdf 四联图（A-D 合并）已出")

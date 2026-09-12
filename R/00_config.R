@@ -23,7 +23,7 @@ params <- list(
 )
 
 params$gene_sets <- list(
-  Kynurenine = c("IDO1","IDO2","TDO2","AFMID","KYNU","KMO","KAT1","KAT2","KAT3","KAT4","HAAO","QPRT","NADSYN1","IL4I1"),
+  Kynurenine = c("IDO1","IDO2","TDO2","AFMID","KYNU","KMO","KYAT1","AADAT","CCBL2","GPT2","HAAO","QPRT","NADSYN1","IL4I1"),
   Glycolysis = c("HK2","PFKP","ALDOA","GAPDH","PGK1","PGAM1","ENO1","PKM","LDHA","SLC2A1","SLC2A3","P4HA1","PFKFB3","PGAM2","TPI1","GPI","FBP1","G6PD"),
   Glutamine  = c("SLC1A5","SLC38A1","SLC38A2","SLC7A5","SLC3A2","SLC7A11","GLS","GLS2","GLUD1","GOT1","GOT2","GPT2","ASNS","MYC"),
   Adenosine  = c("ENTPD1","NT5E","ADORA2A","ADORA2B","ADORA1","CD38","ENPP1","AK3","AK4"),
