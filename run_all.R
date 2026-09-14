@@ -1,12 +1,12 @@
 source("R/00_config.R")
 for (s in c("01_data", "02_scores", "03_cluster", "04_mechanism",
             "05_metabolic", "06_validation", "07_figures", "08_fig9",
-            "09_tcga_survival", "10_tide_supp", "11_extra_analyses")) {
-  message("
-================ ", s, " ================")
+            "09_tcga_survival", "10_tide_supp", "11_extra_analyses",
+            "12_k2_gap", "13_metabric_cluster", "14_sensitivity",
+            "15_cluster_abs_sensitivity", "16_impress_validation",
+            "17_scrna_kp_heatmap")) {
+  message("\n================ ", s, " ================")
   source(file.path("R", paste0(s, ".R")))
 }
-message("
-All done.")
+message("\nAll done.")
 writeLines(capture.output(sessionInfo()), "sessionInfo.txt")
-

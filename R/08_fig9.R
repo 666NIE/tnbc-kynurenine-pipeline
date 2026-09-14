@@ -1,4 +1,4 @@
-# 08_fig9.R — Figure 9: TIDE (4 panels, A-D merged)
+# 08_fig9.R — Figure 8: TIDE (4 panels, 2x2 layout)
 source("R/00_config.R")
 suppressPackageStartupMessages({ library(tidyverse); library(patchwork) })
 coh     <- readRDS(file.path(dirs$results, "01_cohort.rds"))
@@ -32,7 +32,7 @@ f9 <- rdf %>% filter(patient %in% coh$patients, !is.na(TIDE)) %>%
   filter(!is.na(cluster)) %>%
   left_join(scores %>% select(patient, Kynurenine), by = "patient")
 tab <- table(f9$cluster, f9$Responder)
-message("Fig9 应答表:"); print(tab)
+message("Fig8 应答表:"); print(tab)
 message("Fisher: ", fmt_p(fisher.test(tab)$p.value))
 
 prop_df <- f9 %>% group_by(cluster, Responder) %>% summarise(n = n(), .groups = "drop") %>%
@@ -42,8 +42,7 @@ prop_df <- f9 %>% group_by(cluster, Responder) %>% summarise(n = n(), .groups = 
 pA <- ggplot(prop_df, aes(cluster, rate, fill = cluster)) +
   geom_col(width = .6, alpha = .85) +
   geom_errorbar(aes(ymin = lo, ymax = hi), width = .15) +
-  geom_text(aes(label = sprintf("%.1f%%
-(n=%d/%d)", 100 * rate, n, total)),
+  geom_text(aes(label = sprintf("%.1f%%\n(n=%d/%d)", 100 * rate, n, total)),
             vjust = -0.3, size = 3.2) +
   scale_fill_manual(values = sub_cols) + theme_paper() + theme(legend.position = "none") +
   ylim(0, 1.2) +
@@ -63,22 +62,20 @@ pC <- ggplot(f9, aes(Kynurenine, TIDE, color = cluster)) +
   labs(title = "Kynurenine vs TIDE", x = "Kynurenine score", y = "TIDE score",
        color = "Subtype", caption = cor_lab(f9$Kynurenine, f9$TIDE))
 
-# ---- Panel D: TIDE components (merged from former Fig S1) ----
 comp <- read.csv(file.path(dirs$results, "10_tide_components.csv"))
 comp$dir <- comp$rho > 0
 pD <- ggplot(comp, aes(reorder(component, rho), rho, fill = dir)) +
   geom_col(width = .7, color = "black", linewidth = .3) +
-  geom_text(aes(label = sprintf("rho=%.2f
-%s", rho, fmt_p(p))),
+  geom_text(aes(label = sprintf("rho=%.2f\n%s", rho, fmt_p(p))),
             size = 2.8, hjust = ifelse(comp$rho > 0, -0.05, 1.08)) +
   scale_fill_manual(values = c("TRUE" = "#E64B35", "FALSE" = "#4DBBD5")) +
   coord_flip() + theme_paper() + theme(legend.position = "none") +
   ylim(-0.6, 0.78) +
   labs(title = "TIDE components", x = NULL, y = "Spearman rho")
 
-fig9 <- (pA | pB | pC | pD) + plot_annotation(tag_levels = "A") &
+fig8 <- (pA | pB) / (pC | pD) + plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 14, face = "bold"))
-ggsave(file.path(dirs$figures, "Figure8_TIDE.pdf"), fig9, width = 17, height = 5)
+ggsave(file.path(dirs$figures, "Figure8_TIDE.pdf"), fig8, width = 11, height = 9)
 write.csv(f9 %>% select(patient, cluster, TIDE, Responder, Kynurenine),
           file.path(dirs$results, "08_tide.csv"), row.names = FALSE)
-message("08 done: Figure8_TIDE.pdf 四联图（A-D 合并）已出")
+message("08 done: Figure8_TIDE.pdf 2x2（A-D）已出")

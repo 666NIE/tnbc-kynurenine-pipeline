@@ -77,5 +77,4 @@ miss <- setdiff(need, names(params))
 if (length(miss) > 0) stop("config incomplete: ", paste(miss, collapse = ", "))
 message("config loaded.")
 paths$response <- "~/Downloads/TNBC_output/Table_S2_immunotherapy_scores.csv"
-paths$response <- "完整路径"
 paths$response <- "~/Downloads/TIDE_output.csv"
