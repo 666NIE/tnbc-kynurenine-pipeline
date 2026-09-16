@@ -67,9 +67,10 @@ p3e <- ggplot(e_dat, aes(swap_cluster, z, fill = metric)) +
   scale_fill_manual(values = e_cols) + theme_paper() +
   labs(title = "Swap-in clustering (absolute z replaces ssGSEA)",
        x = "Swap-in cluster", y = "mean z", fill = NULL,
-       caption = sprintf("原 C1 落入绝对高 Kyn 簇比例: %s%%（n=28/28 集中于低表达-低免疫侧）", pct_c1))
+       caption = sprintf("Original C1 in top absolute-Kyn cluster: %s%%", pct_c1)) +
+  theme(legend.position = "bottom")
 
 fig2 <- (p3a | p3b) / (p3c | p3d) / p3e + plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 14, face = "bold"))
-ggsave(file.path(dirs$figures, "Figure2_trap.pdf"), fig2, width = 11, height = 14.5)
+ggsave(file.path(dirs$figures, "Figure2_trap.pdf"), fig2, width = 12, height = 15.5)
 message("Figure2 五面板版已出: figures/Figure2_trap.pdf")
