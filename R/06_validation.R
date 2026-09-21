@@ -83,6 +83,10 @@ p10 <- ggsurvplot(fkm, data = msurv, pval = TRUE, risk.table = TRUE,
                   ggtheme = theme_paper())
 pdf(file.path(dirs$figures, "Figure9_METABRIC_IDO1_OS.pdf"), width = 7, height = 7)
 print(p10); dev.off()
+# [PATCH] Cox PH assumption tests
+cat("\n=== cox.zph: PH assumption ===\n")
+print(cox.zph(coxph(Surv(os_time, os_event) ~ Kyn_group, data = msurv)))
+print(cox.zph(coxph(Surv(os_time, os_event) ~ scale(IDO1), data = msurv)))
 write.csv(msurv, file.path(dirs$results, "06_metabric_surv.csv"), row.names = FALSE)
 saveRDS(list(metabric = mdf, msurv = msurv), file.path(dirs$results, "06_metabric.rds"))
 message("06 done")

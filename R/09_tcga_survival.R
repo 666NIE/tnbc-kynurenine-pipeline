@@ -13,6 +13,9 @@ message("log-rank: ", fmt_p(surv_pvalue(fit)$pval))
 s <- summary(coxph(Surv(os_time, os_event) ~ cluster, data = sdf))
 message(sprintf("Cox C2 HR = %.2f | C3 HR = %.2f",
                 s$conf.int[1, "exp(coef)"], s$conf.int[2, "exp(coef)"]))
+# [PATCH] Cox PH assumption test
+cat("=== cox.zph: PH assumption ===\n")
+print(cox.zph(coxph(Surv(os_time, os_event) ~ cluster, data = sdf)))
 write.csv(data.frame(n = nrow(sdf), events = sum(sdf$os_event),
                      logrank_p = surv_pvalue(fit)$pval),
           file.path(dirs$results, "09_tcga_survival.csv"), row.names = FALSE)
