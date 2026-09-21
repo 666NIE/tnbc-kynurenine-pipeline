@@ -1,4 +1,4 @@
-# 20_metabric_m1_survival.R — M1 vs non-M1 OS + Cox PH assumption tests
+# 29_metabric_m1_survival.R — M1 vs non-M1 OS + Cox PH assumption tests
 # v2：修正年龄提取（as.numeric(as.character(AGE_AT_DIAGNOSIS))，原 grep 方案抓到 0-3 编码列）
 # 并加入全分层敏感性模型（stage x 年龄三分位）
 source("R/00_config.R")
@@ -40,5 +40,5 @@ cat("\n=== cox.zph: PH assumption ===\n")
 print(cox.zph(f_m1)); print(cox.zph(f_adj)); print(cox.zph(f_strat))
 
 saveRDS(list(f_m1 = f_m1, f_adj = f_adj, f_strat = f_strat),
-        file.path(dirs$results, "20_metabric_m1_survival.rds"))
+        file.path(dirs$results, "29_metabric_m1_survival.rds"))
 message("20 done")
