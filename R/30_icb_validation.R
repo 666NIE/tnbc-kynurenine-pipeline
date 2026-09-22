@@ -5,6 +5,12 @@ source("R/00_config.R")
 suppressPackageStartupMessages({ library(tidyverse); library(data.table) })
 
 ispy2_dir <- "~/Downloads"   # 三个下载文件所在目录，按需修改
+ispy2_expr <- file.path(ispy2_dir,
+  "GSE194040_ISPY2ResID_AgilentGeneExp_990_FrshFrzn_meanCol_geneLevel_n988.txt.gz")
+if (!file.exists(ispy2_expr)) {
+  message("30 skipped: I-SPY2 files not found in ", ispy2_dir,
+          " (public download from GEO GSE194040). All other scripts unaffected.")
+} else {
 
 # ---- 1. 注释表（绕过 GEOquery，直接解析 series matrix） ----
 parse_geo_meta <- function(f) {
@@ -108,3 +114,4 @@ write.csv(data.frame(test = c("fisher_trap_pcr","OR_trap","OR_lo","OR_hi",
                                unname(ct$estimate), unname(ct2$estimate))),
           file.path(dirs$results, "30_icb_validation_summary.csv"), row.names = FALSE)
 message("30 done")
+}
