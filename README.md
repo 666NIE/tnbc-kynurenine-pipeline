@@ -8,7 +8,7 @@ This repository contains the analysis code, results, and final figure files for 
 - `R/`: analysis scripts and final figure-generation scripts
 - `_archive/`: deprecated or intermediate scripts retained for provenance only
 - `results/`: curated CSV/RDS outputs used by figures and tables
-- `Figures/`: final manuscript figures
+- `figures/`: final manuscript figures
 - `additional_files/`: Additional file 1-6 figures and Additional file 7 supplementary tables
 - `data-raw/manual_downloads/`: manually downloaded public datasets and trial/data-portal files required by some modules; large files are local-only and not tracked
 - `sessionInfo.txt`: R session information for the analysis environment
