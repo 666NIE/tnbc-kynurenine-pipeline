@@ -77,8 +77,7 @@ pD <- ggplot(comp, aes(reorder(component, rho), rho, fill = dir)) +
 fig8 <- (pA | pB) / (pC | pD) + plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 14, face = "bold"))
 fig6_cci <- fig8
-ggsave(file.path(dirs$figures, "Figure6.png"), fig6_cci, width = 170, height = 140, units = "mm", dpi = 300, bg = "white")
-ggsave(file.path(dirs$figures, "Figure6.pdf"), fig6_cci, width = 170, height = 140, units = "mm", bg = "white")
+ggsave(file.path(dirs$figures, "Figure6_threeGroup_legacy.pdf"), fig6_cci, width = 170, height = 140, units = "mm", bg = "white")
 write.csv(f9 %>% select(patient, cluster, TIDE, Responder, Kynurenine),
           file.path(dirs$results, "08_tide.csv"), row.names = FALSE)
 message("08 done: Figure6 CCI export done: figures/Figure6.png / Figure6.pdf")
