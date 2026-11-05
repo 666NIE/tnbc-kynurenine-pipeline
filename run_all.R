@@ -1,7 +1,40 @@
+# run_all.R — core-only driver for the TNBC kynurenine-pipeline repository
+# Scope:
+#   Build the core TCGA/METABRIC score/cluster objects and regenerate final Figure 2/Figure 3.
+#   It intentionally does NOT run manual-download, spatial, CPTAC, DepMap, I-SPY2, or legacy modules.
+# Run from repository root:  Rscript run_all.R
+
 source("R/00_config.R")
-for (s in c("01_data", "02_scores", "03_cluster", "04_mechanism", "05_metabolic", "06_validation", "08_fig9", "09_tcga_survival", "10_tide_supp", "11_extra_analyses", "12_k2_gap", "13_metabric_cluster", "14_sensitivity", "15_cluster_abs_sensitivity", "16_impress_validation", "17_scrna_kp_heatmap", "18_reviewer_round9", "19_final_robustness", "20_immune_correction", "21_spatial_kp", "24_cibersortx_check", "25_random_geneset_control", "26_expression_matched_null", "27_multivariable_arbitration", "28_metabric_replication", "29_metabric_m1_survival", "29b_metabric_m1_survival_npi", "30_icb_validation", "31_icb_validation_figure", "32_afmid_metabric_check", "33_verify_metabric_tnbc", "34_afmid_drop_sensitivity", "36_metabolic_only_clustering", "37_spatial_slice_level", "38_purity_rank", "39_supplementary_composites", "40_gse25066_validation", "41_figureS7_locked_classifier", "42_figureS4_kp_protein_ranking", "43_cptac_protein_boxplots", "44_pancancer_survey")) {
-  message("\n================ ", s, " ================")
-  source(file.path("R", paste0(s, ".R")))
+stopifnot(exists("dirs"), exists("paths"))
+
+dir.create(dirs$results, recursive = TRUE, showWarnings = FALSE)
+dir.create(dirs$figures, recursive = TRUE, showWarnings = FALSE)
+
+core_inputs <- c(
+  tcga_expr = paths$tcga_expr,
+  tcga_surv = paths$tcga_surv,
+  metabric  = paths$metabric
+)
+missing <- core_inputs[!vapply(core_inputs, function(p) file.exists(path.expand(p)), logical(1))]
+if (length(missing)) {
+  stop(
+    "Missing core input(s):\n  ", paste(missing, collapse = "\n  "),
+    "\nPlace them under data-raw/manual_downloads/ as described in data-raw/manual_downloads/README.md"
+  )
 }
-message("\nAll done.")
-writeLines(capture.output(sessionInfo()), "sessionInfo.txt")
+
+core_scripts <- c(
+  "01_data.R",
+  "02_scores.R",
+  "03_cluster.R",
+  "make_figure2_final_style.R",
+  "make_figure3_final_style.R"
+)
+
+for (s in core_scripts) {
+  message("\n===== run_all core: ", s, " =====")
+  source(file.path("R", s))
+}
+
+message("\nrun_all core-only finished. Core outputs: results/01_*.rds, results/02_*.rds, results/03_*.rds, figures/Figure2.png, figures/Figure3.png")
+message("Optional modules (not run here): 04-46 legacy/manual modules, 17/21/37 spatial/scRNA, 40/41/30/31 ICB, 42/43/44/45 pan-cancer/CPTAC.")
