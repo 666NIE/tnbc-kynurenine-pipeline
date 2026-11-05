@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/34382743/README.md)
 # TNBC Kynurenine Pipeline
 
 This repository contains the analysis code, results, and final figure files for the TNBC kynurenine-pathway subtype study.
@@ -12,6 +11,7 @@ This repository contains the analysis code, results, and final figure files for 
 - `additional_files/`: Additional file 1-6 figures and Additional file 7 supplementary tables
 - `data-raw/manual_downloads/`: manually downloaded public datasets and trial/data-portal files required by some modules; large files are local-only and not tracked
 - `sessionInfo.txt`: R session information for the analysis environment
+- `final_submission_mapping_verified_package.xlsx`: inventory mapping manuscript figures/additional files to scripts, results, and deposited files
 - `LICENSE`: repository license
 - `README.md`: this file
 
@@ -31,14 +31,14 @@ The core discovery pipeline is:
 
 Canonical final figure files are named:
 
-- `Figure1.png`
-- `Figure2.png`
-- `Figure3.png`
-- `Figure4.png`
-- `Figure5.png`
-- `Figure6.png`
-- `Figure7.png`
-- `Figure8.png`
+- `figures/Figure1.png`
+- `figures/Figure2.png`
+- `figures/Figure3.png`
+- `figures/Figure4.png`
+- `figures/Figure5.png`
+- `figures/Figure6.png`
+- `figures/Figure7.png`
+- `figures/Figure8.png`
 
 Important figure notes:
 
